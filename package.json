@@ -11,12 +11,8 @@
     "lint:prettier": "prettier --check .",
     "fix": "run-s fix:prettier fix:eslint",
     "fix:eslint": "npm run lint:eslint -- --fix",
-    "fix:prettier": "npm run lint:prettier -- --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "fix:prettier": "npm run lint:prettier -- --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "express": "^4.19.2",

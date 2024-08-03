@@ -8,4 +8,5 @@ out/
 public/
 package-lock.json
 next.config.mjs
+pnpm-lock.yaml
 .idea

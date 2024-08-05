@@ -24,6 +24,7 @@ const Table: React.FC<TableProps> = ({
   cursor,
   setCursor,
   handleLabelChange,
+  predictedLabel,
 }) => {
   return (
     <table>

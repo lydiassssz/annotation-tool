@@ -1,5 +1,24 @@
 import React from 'react'
 
+// 背景色のマッピング
+const getBackgroundColor = (speaker_code: number, isCursor: boolean) => {
+  const colors: Record<number, [string, string]> = {
+    1: ['#f0f0f0', '#d9d9d9'], // 灰色
+    2: ['#cce5ff', '#a5c2ea'], // 薄い青、濃い青
+    3: ['#d4edda', '#a3d5af'], // 薄い緑、濃い緑
+    4: ['#fff3cd', '#ffecb5'], // 薄い黄色、濃い黄色
+    5: ['#f8d7da', '#f5c6cb'], // 薄い赤、濃い赤
+    6: ['#ffe5d4', '#f8c6a2'], // 薄いオレンジ、濃いオレンジ
+    7: ['#e2d9f3', '#d0a6f1'], // 薄い紫、濃い紫
+  }
+
+  // 色の配列を取得
+  const colorPair = colors[speaker_code] || ['transparent', 'transparent']
+
+  // カーソルが合わさった場合のみ濃い色
+  return isCursor ? colorPair[1] : colorPair[0]
+}
+
 interface TableRow {
   number: number
   text: string
@@ -49,27 +68,27 @@ const Table: React.FC<TableProps> = ({
           const isInvalid =
             row.new_label !== null && row.new_label >= row.number
           const isEmpty = row.new_label === null
+          const isCursor = cursor === index
+          const bgColor = getBackgroundColor(row.speaker_code, isCursor)
 
           return (
             <tr
               key={row.number}
               style={{
-                backgroundColor: cursor === index ? '#f0f0f0' : 'transparent',
+                backgroundColor: isCursor ? '#f0f0f0' : 'transparent',
               }}
             >
-              <td>{row.number}</td>
-              <td>
-                <span
-                  onClick={() => handleTextClick(index)} // 修正: 現在カーソルがある行に値を設定しカーソルを1つ下に移動
-                  style={{ cursor: 'pointer' }}
-                >
-                  {row.text}
-                </span>
+              <td style={{ backgroundColor: bgColor }}>{row.number}</td>
+              <td
+                style={{ backgroundColor: bgColor, cursor: 'pointer' }}
+                onClick={() => handleTextClick(index)}
+              >
+                {row.text}
               </td>
-              <td>{row.speaker_code}</td>
-              <td>{row.from}</td>
-              <td>{row.to}</td>
-              <td>{row.label}</td>
+              <td style={{ backgroundColor: bgColor }}>{row.speaker_code}</td>
+              <td style={{ backgroundColor: bgColor }}>{row.from}</td>
+              <td style={{ backgroundColor: bgColor }}>{row.to}</td>
+              <td style={{ backgroundColor: bgColor }}>{row.label}</td>
               <td
                 style={{
                   position: 'relative',
@@ -90,7 +109,7 @@ const Table: React.FC<TableProps> = ({
                       ? 'transparent'
                       : isInvalid
                         ? '#fdd'
-                        : 'transparent',
+                        : 'white',
                     color: isInvalid ? '#a00' : 'inherit',
                     position: 'relative',
                   }}

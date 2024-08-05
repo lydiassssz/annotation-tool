@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { CSVDownloader } from './CSVDownloader' // 追加
 import { CSVReader } from './CSVReader'
 import Table from './table'
 import { useInputValidation } from './useInputValidation'
@@ -87,6 +88,11 @@ export default function Page() {
   return (
     <>
       <CSVReader onDataLoaded={handleDataLoaded} />
+      <CSVDownloader
+        data={testTable}
+        filename="annotated_data.csv" // デフォルトファイル名
+        style={{ position: 'absolute', top: 10, right: 10 }}
+      />
       <Table
         testTable={testTable}
         cursor={cursor}

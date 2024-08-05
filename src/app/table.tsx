@@ -1,10 +1,29 @@
-const Table = ({
+import React from 'react'
+
+interface TableRow {
+  number: number
+  text: string
+  speaker_code: number
+  from: number
+  to: number
+  label: number
+  new_label: number | NaN
+}
+
+interface TableProps {
+  testTable: TableRow[]
+  cursor: number
+  setCursor: React.Dispatch<React.SetStateAction<number>>
+  handleLabelChange: (index: number, newLabel: string) => void
+  predictedLabel: number
+}
+
+// Table component definition
+const Table: React.FC<TableProps> = ({
   testTable,
   cursor,
   setCursor,
   handleLabelChange,
-  predictedLabel,
-  calculatePredictedLabel,
 }) => {
   return (
     <table>

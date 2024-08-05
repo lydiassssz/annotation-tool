@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 interface TableRow {
   number: number
@@ -17,7 +17,8 @@ interface TableProps {
   handleLabelChange: (index: number, newLabel: number | null) => void
   predictedLabel: number | null
   handleTextClick: (index: number) => void
-  inputRefs: React.MutableRefObject<HTMLInputElement[]> // 追加
+  handleInputClick: (index: number) => void
+  inputRefs: React.MutableRefObject<HTMLInputElement[]>
 }
 
 const Table: React.FC<TableProps> = ({
@@ -27,23 +28,9 @@ const Table: React.FC<TableProps> = ({
   handleLabelChange,
   predictedLabel,
   handleTextClick,
+  handleInputClick,
   inputRefs,
 }) => {
-  const handleInputChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    handleLabelChange(index, parseInt(e.target.value) || null)
-  }
-
-  useEffect(() => {
-    if (inputRefs.current[cursor]) {
-      const input = inputRefs.current[cursor]
-      const { selectionStart, selectionEnd } = input
-      // ここでカーソル位置の変更に対応する処理を追加
-    }
-  }, [cursor])
-
   return (
     <table>
       <thead>
@@ -73,7 +60,7 @@ const Table: React.FC<TableProps> = ({
               <td>{row.number}</td>
               <td>
                 <span
-                  onClick={() => handleTextClick(index)}
+                  onClick={() => handleTextClick(index)} // 修正: 現在カーソルがある行に値を設定しカーソルを1つ下に移動
                   style={{ cursor: 'pointer' }}
                 >
                   {row.text}
@@ -91,11 +78,13 @@ const Table: React.FC<TableProps> = ({
                 <input
                   type="text"
                   value={row.new_label === null ? '' : row.new_label.toString()}
-                  onChange={(e) => handleInputChange(index, e)}
-                  onClick={() => setCursor(index)}
+                  onChange={(e) =>
+                    handleLabelChange(index, Number(e.target.value) || null)
+                  }
+                  onClick={() => handleInputClick(index)} // 修正: inputがクリックされた時にその行にカーソルを移動
                   ref={(el) => {
                     if (el) inputRefs.current[index] = el
-                  }} // 修正
+                  }}
                   style={{
                     backgroundColor: isEmpty
                       ? 'transparent'

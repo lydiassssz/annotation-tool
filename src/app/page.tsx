@@ -30,15 +30,13 @@ export default function Page() {
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
-      if (currentLabel === null || isNaN(currentLabel)) {
+      if (currentLabel === null) {
         // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()
-        if (prediction !== 0) {
-          updatedTable[cursor].new_label = Number(prediction)
-          setTestTable(updatedTable)
-        }
+        updatedTable[cursor].new_label = Number(prediction)
 
+        setTestTable(updatedTable)
         setCursor((prevCursor) =>
           Math.min(prevCursor + 1, testTable.length - 1),
         )
@@ -53,9 +51,16 @@ export default function Page() {
   }
 
   const handleTextClick = (index: number) => {
+    // 現在編集中の行に値を設定する
     const number = testTable[index].number
-    handleLabelChange(index, number)
+    handleLabelChange(cursor, number)
+    // カーソルを1つ下に移動する
     setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
+  }
+
+  const handleInputClick = (index: number) => {
+    // inputがクリックされた時、カーソルをその行に移動する
+    setCursor(index)
   }
 
   useEffect(() => {
@@ -89,7 +94,8 @@ export default function Page() {
         handleLabelChange={handleLabelChange}
         predictedLabel={predictedLabel}
         handleTextClick={handleTextClick}
-        inputRefs={inputRefs} // 追加
+        handleInputClick={handleInputClick}
+        inputRefs={inputRefs}
       />
     </>
   )

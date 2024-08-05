@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface TableRow {
   number: number
@@ -17,6 +17,7 @@ interface TableProps {
   handleLabelChange: (index: number, newLabel: number | null) => void
   predictedLabel: number | null
   handleTextClick: (index: number) => void
+  inputRefs: React.MutableRefObject<HTMLInputElement[]> // 追加
 }
 
 const Table: React.FC<TableProps> = ({
@@ -26,7 +27,23 @@ const Table: React.FC<TableProps> = ({
   handleLabelChange,
   predictedLabel,
   handleTextClick,
+  inputRefs,
 }) => {
+  const handleInputChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    handleLabelChange(index, parseInt(e.target.value) || null)
+  }
+
+  useEffect(() => {
+    if (inputRefs.current[cursor]) {
+      const input = inputRefs.current[cursor]
+      const { selectionStart, selectionEnd } = input
+      // ここでカーソル位置の変更に対応する処理を追加
+    }
+  }, [cursor])
+
   return (
     <table>
       <thead>
@@ -74,10 +91,11 @@ const Table: React.FC<TableProps> = ({
                 <input
                   type="text"
                   value={row.new_label === null ? '' : row.new_label.toString()}
-                  onChange={(e) =>
-                    handleLabelChange(index, parseInt(e.target.value) || null)
-                  }
+                  onChange={(e) => handleInputChange(index, e)}
                   onClick={() => setCursor(index)}
+                  ref={(el) => {
+                    if (el) inputRefs.current[index] = el
+                  }} // 修正
                   style={{
                     backgroundColor: isEmpty
                       ? 'transparent'

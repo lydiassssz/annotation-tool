@@ -5,7 +5,7 @@ import { CSVReader } from './CSVReader'
 import Table from './table'
 import { useInputValidation } from './useInputValidation'
 import { usePredictedLabel } from './usePredictedLabel'
-import { test_table } from './utils' // データのインポート
+import { test_table } from './utils'
 
 export default function Page() {
   const [testTable, setTestTable] = useState(test_table)
@@ -40,24 +40,20 @@ export default function Page() {
         setCursor((prevCursor) =>
           Math.min(prevCursor + 1, testTable.length - 1),
         )
-        e.preventDefault() // Prevent the default Tab behavior
+        e.preventDefault()
       } else {
-        // 値がすでに入力されている場合はカーソルを移動
         setCursor((prevCursor) =>
           Math.min(prevCursor + 1, testTable.length - 1),
         )
-        e.preventDefault() // Prevent the default Tab behavior
+        e.preventDefault()
       }
     }
   }
 
   const handleTextClick = (index: number) => {
     const number = testTable[index].number
-    // クリックされた時点で既存の new_label をクリア
     handleLabelChange(cursor, NaN)
-    // 新しい値を設定
     handleLabelChange(cursor, number)
-    // カーソルを次の行に移動
     setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
   }
 
@@ -92,6 +88,7 @@ export default function Page() {
         handleLabelChange={handleLabelChange}
         predictedLabel={predictedLabel}
         handleTextClick={handleTextClick}
+        inputRefs={inputRefs} // 追加
       />
     </>
   )

@@ -14,8 +14,9 @@ interface TableProps {
   testTable: TableRow[]
   cursor: number
   setCursor: React.Dispatch<React.SetStateAction<number>>
-  handleLabelChange: (index: number, newLabel: string) => void
+  handleLabelChange: (index: number, newLabel: number) => void
   predictedLabel: number
+  handleTextClick: (index: number) => void
 }
 
 // Table component definition
@@ -25,6 +26,7 @@ const Table: React.FC<TableProps> = ({
   setCursor,
   handleLabelChange,
   predictedLabel,
+  handleTextClick,
 }) => {
   return (
     <table>
@@ -52,7 +54,14 @@ const Table: React.FC<TableProps> = ({
               }}
             >
               <td>{row.number}</td>
-              <td>{row.text}</td>
+              <td>
+                <span
+                  onClick={() => handleTextClick(index)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {row.text}
+                </span>
+              </td>
               <td>{row.speaker_code}</td>
               <td>{row.from}</td>
               <td>{row.to}</td>
@@ -64,8 +73,10 @@ const Table: React.FC<TableProps> = ({
               >
                 <input
                   type="text"
-                  value={isNaN(row.new_label) ? '' : row.new_label}
-                  onChange={(e) => handleLabelChange(index, e.target.value)}
+                  value={isEmpty ? '' : row.new_label}
+                  onChange={(e) =>
+                    handleLabelChange(index, parseInt(e.target.value) || NaN)
+                  }
                   onClick={() => setCursor(index)}
                   style={{
                     backgroundColor: isEmpty

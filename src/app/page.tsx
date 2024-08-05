@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Table from './table'
 import { useInputValidation } from './useInputValidation'
 import { usePredictedLabel } from './usePredictedLabel'
@@ -50,8 +50,14 @@ export default function Page() {
     }
   }
 
-  const handleClick = (index: React.SetStateAction<number>) => {
-    setCursor(index)
+  const handleTextClick = (index: number) => {
+    const number = testTable[index].number
+    // クリックされた時点で既存の new_label をクリア
+    handleLabelChange(cursor, NaN)
+    // 新しい値を設定
+    handleLabelChange(cursor, number)
+    // カーソルを次の行に移動
+    setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
   }
 
   useEffect(() => {
@@ -79,6 +85,7 @@ export default function Page() {
         setCursor={setCursor}
         handleLabelChange={handleLabelChange}
         predictedLabel={predictedLabel}
+        handleTextClick={handleTextClick}
       />
     </>
   )

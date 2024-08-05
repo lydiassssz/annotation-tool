@@ -20,13 +20,9 @@ export const useInputValidation = ({
   testTable,
   setTestTable,
 }: UseInputValidationProps) => {
-  const handleLabelChange = (index: number, newLabel: string) => {
+  const handleLabelChange = (index: number, newLabel: number) => {
     const updatedTable = [...testTable]
-
-    const numericValue = newLabel === '' ? '' : parseInt(newLabel, 10) || ''
-
-    updatedTable[index].new_label = numericValue === '' ? NaN : numericValue
-
+    updatedTable[index].new_label = newLabel
     setTestTable(updatedTable)
   }
 

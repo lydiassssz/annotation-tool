@@ -30,13 +30,15 @@ export default function Page() {
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
-      if (isNaN(typeof currentLabel === 'number' ? currentLabel : NaN)) {
+      if (currentLabel === null || isNaN(currentLabel)) {
         // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()
-        updatedTable[cursor].new_label = Number(prediction)
+        if (prediction !== 0) {
+          updatedTable[cursor].new_label = Number(prediction)
+          setTestTable(updatedTable)
+        }
 
-        setTestTable(updatedTable)
         setCursor((prevCursor) =>
           Math.min(prevCursor + 1, testTable.length - 1),
         )
@@ -52,8 +54,7 @@ export default function Page() {
 
   const handleTextClick = (index: number) => {
     const number = testTable[index].number
-    handleLabelChange(cursor, NaN)
-    handleLabelChange(cursor, number)
+    handleLabelChange(index, number)
     setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
   }
 

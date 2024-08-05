@@ -14,7 +14,7 @@ export default function Page() {
     testTable,
     cursor,
   )
-  const { handleLabelChange } = useInputValidation(testTable, setTestTable)
+  const { handleLabelChange } = useInputValidation({ testTable, setTestTable })
 
   const handleKeyDown = async (e: {
     key: string

@@ -1,6 +1,12 @@
 import { useState } from 'react'
 
-export const usePredictedLabel = (testTable, cursor) => {
+export const usePredictedLabel = (
+  testTable: {
+    speaker_code: number
+    new_label: number
+  }[],
+  cursor: number,
+) => {
   const [predictedLabel, setPredictedLabel] = useState(NaN)
 
   const calculatePredictedLabel = () => {

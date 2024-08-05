@@ -79,7 +79,6 @@ export default function Page() {
         setCursor={setCursor}
         handleLabelChange={handleLabelChange}
         predictedLabel={predictedLabel}
-        calculatePredictedLabel={calculatePredictedLabel}
       />
     </>
   )

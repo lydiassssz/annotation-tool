@@ -7,7 +7,7 @@ interface TableRow {
   from: number
   to: number
   label: number
-  new_label: number | NaN
+  new_label: number
 }
 
 interface TableProps {

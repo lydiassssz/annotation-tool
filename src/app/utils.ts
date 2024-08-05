@@ -1,4 +1,16 @@
-export const test_table = [
+// 型の定義
+export interface TableRow {
+  number: number
+  text: string
+  speaker_code: number
+  from: number
+  to: number
+  label: number
+  new_label: number | null
+}
+
+// test_tableをTableRow[]型に変更
+export const test_table: TableRow[] = [
   {
     number: 2,
     text: 'テキスト1',
@@ -78,7 +90,7 @@ export const test_table = [
     from: 37.6,
     to: 39.28,
     label: 9,
-    new_label: NaN,
+    new_label: null,
   },
   {
     number: 11,
@@ -87,7 +99,7 @@ export const test_table = [
     from: 39.4,
     to: 44.53999999999999,
     label: 10,
-    new_label: NaN,
+    new_label: null,
   },
   {
     number: 12,
@@ -96,7 +108,7 @@ export const test_table = [
     from: 44.54,
     to: 45.62,
     label: 11,
-    new_label: NaN,
+    new_label: null,
   },
   {
     number: 13,
@@ -105,7 +117,7 @@ export const test_table = [
     from: 45.62,
     to: 57.74,
     label: 11,
-    new_label: NaN,
+    new_label: null,
   },
   {
     number: 14,
@@ -114,6 +126,6 @@ export const test_table = [
     from: 57.74,
     to: 57.94,
     label: 13,
-    new_label: NaN,
+    new_label: null,
   },
 ]

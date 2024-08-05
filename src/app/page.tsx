@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { CSVReader } from './CSVReader'
 import Table from './table'
 import { useInputValidation } from './useInputValidation'
 import { usePredictedLabel } from './usePredictedLabel'
@@ -29,7 +30,7 @@ export default function Page() {
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
-      if (isNaN(currentLabel)) {
+      if (isNaN(typeof currentLabel === 'number' ? currentLabel : NaN)) {
         // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()
@@ -77,8 +78,13 @@ export default function Page() {
     calculatePredictedLabel()
   }, [cursor])
 
+  const handleDataLoaded = (data: typeof testTable) => {
+    setTestTable(data)
+  }
+
   return (
     <>
+      <CSVReader onDataLoaded={handleDataLoaded} />
       <Table
         testTable={testTable}
         cursor={cursor}

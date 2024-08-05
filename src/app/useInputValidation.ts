@@ -1,3 +1,5 @@
+import type React from 'react'
+
 // Define the types
 interface TableRow {
   number: number
@@ -6,7 +8,7 @@ interface TableRow {
   from: number
   to: number
   label: number
-  new_label: number
+  new_label: number | null
 }
 
 // Define the type for the function arguments
@@ -20,9 +22,9 @@ export const useInputValidation = ({
   testTable,
   setTestTable,
 }: UseInputValidationProps) => {
-  const handleLabelChange = (index: number, newLabel: number) => {
+  const handleLabelChange = (index: number, newLabel: number | null) => {
     const updatedTable = [...testTable]
-    updatedTable[index].new_label = newLabel
+    updatedTable[index].new_label = newLabel === 0 ? null : newLabel
     setTestTable(updatedTable)
   }
 

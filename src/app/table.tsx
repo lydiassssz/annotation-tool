@@ -7,19 +7,18 @@ interface TableRow {
   from: number
   to: number
   label: number
-  new_label: number
+  new_label: number | null
 }
 
 interface TableProps {
   testTable: TableRow[]
   cursor: number
   setCursor: React.Dispatch<React.SetStateAction<number>>
-  handleLabelChange: (index: number, newLabel: number) => void
-  predictedLabel: number
+  handleLabelChange: (index: number, newLabel: number | null) => void
+  predictedLabel: number | null
   handleTextClick: (index: number) => void
 }
 
-// Table component definition
 const Table: React.FC<TableProps> = ({
   testTable,
   cursor,
@@ -43,8 +42,9 @@ const Table: React.FC<TableProps> = ({
       </thead>
       <tbody>
         {testTable.map((row, index) => {
-          const isInvalid = !isNaN(row.new_label) && row.new_label >= row.number
-          const isEmpty = isNaN(row.new_label)
+          const isInvalid =
+            row.new_label !== null && row.new_label >= row.number
+          const isEmpty = row.new_label === null
 
           return (
             <tr
@@ -68,14 +68,14 @@ const Table: React.FC<TableProps> = ({
               <td>{row.label}</td>
               <td
                 style={{
-                  position: 'relative', // Set position to relative to allow absolute positioning within it
+                  position: 'relative',
                 }}
               >
                 <input
                   type="text"
-                  value={isEmpty ? '' : row.new_label}
+                  value={row.new_label === null ? '' : row.new_label.toString()}
                   onChange={(e) =>
-                    handleLabelChange(index, parseInt(e.target.value) || NaN)
+                    handleLabelChange(index, parseInt(e.target.value) || null)
                   }
                   onClick={() => setCursor(index)}
                   style={{

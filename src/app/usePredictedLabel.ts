@@ -1,18 +1,26 @@
 import { useState } from 'react'
 
+interface TestTableRow {
+  speaker_code: number
+  new_label: number | null
+}
+
 export const usePredictedLabel = (
-  testTable: {
-    speaker_code: number
-    new_label: number
-  }[],
+  testTable: TestTableRow[],
   cursor: number,
 ) => {
-  const [predictedLabel, setPredictedLabel] = useState(NaN)
+  const [predictedLabel, setPredictedLabel] = useState<number | null>(null)
 
   const calculatePredictedLabel = () => {
     return new Promise((resolve) => {
+      if (testTable.length === 0 || cursor < 0 || cursor >= testTable.length) {
+        resolve(null)
+        setPredictedLabel(null)
+        return
+      }
+
       let prediction = 0
-      if (isNaN(testTable[cursor].new_label)) {
+      if (testTable[cursor].new_label === null) {
         const currentSpeakerCode = testTable[cursor].speaker_code
 
         if (currentSpeakerCode === 1) {
@@ -26,7 +34,7 @@ export const usePredictedLabel = (
           }
         }
       } else {
-        prediction = testTable[cursor].new_label
+        prediction = testTable[cursor].new_label || 0
       }
       resolve(prediction)
       setPredictedLabel(prediction)

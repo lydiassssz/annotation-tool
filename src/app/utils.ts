@@ -109,7 +109,7 @@ export const test_table = [
   },
   {
     number: 14,
-    text: 'テキスト13',
+    text: 'テキスト1',
     speaker_code: 2,
     from: 57.74,
     to: 57.94,

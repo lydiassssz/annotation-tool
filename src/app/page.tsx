@@ -9,7 +9,7 @@ import { test_table } from './utils' // データのインポート
 export default function Page() {
   const [testTable, setTestTable] = useState(test_table)
   const [cursor, setCursor] = useState(0)
-  const inputRefs = useRef([])
+  const inputRefs = useRef<HTMLInputElement[]>([])
   const { predictedLabel, calculatePredictedLabel } = usePredictedLabel(
     testTable,
     cursor,
@@ -29,7 +29,7 @@ export default function Page() {
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
-      if (isNaN(currentLabel) || currentLabel === '') {
+      if (isNaN(currentLabel)) {
         // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()

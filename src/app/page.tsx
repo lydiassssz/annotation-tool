@@ -29,7 +29,7 @@ export default function Page() {
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
-      if (isNaN(currentLabel) || currentLabel === '') {
+      if (isNaN(currentLabel)) {
         // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()

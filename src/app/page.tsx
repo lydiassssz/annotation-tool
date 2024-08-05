@@ -16,7 +16,10 @@ export default function Page() {
   )
   const { handleLabelChange } = useInputValidation(testTable, setTestTable)
 
-  const handleKeyDown = async (e) => {
+  const handleKeyDown = async (e: {
+    key: string
+    preventDefault: () => void
+  }) => {
     if (e.key === 'ArrowUp' && cursor > 0) {
       setCursor(cursor - 1)
     } else if (e.key === 'ArrowDown' && cursor < testTable.length - 1) {

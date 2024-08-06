@@ -6,7 +6,7 @@ const getBackgroundColor = (speaker_code: number, isCursor: boolean) => {
     1: ['#f0f0f0', '#d9d9d9'], // 灰色
     2: ['#cce5ff', '#a5c2ea'], // 薄い青、濃い青
     3: ['#d4edda', '#a3d5af'], // 薄い緑、濃い緑
-    4: ['#fff3cd', '#ffecb5'], // 薄い黄色、濃い黄色
+    4: ['#fff3cd', '#ffe597'], // 薄い黄色、濃い黄色
     5: ['#f8d7da', '#f5c6cb'], // 薄い赤、濃い赤
     6: ['#ffe5d4', '#f8c6a2'], // 薄いオレンジ、濃いオレンジ
     7: ['#e2d9f3', '#d0a6f1'], // 薄い紫、濃い紫

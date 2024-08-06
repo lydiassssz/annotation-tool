@@ -30,6 +30,7 @@ export default function Page() {
       setCursor(cursor + 1)
     } else if (e.key === 'Space' && cursor === testTable.length - 1) {
       setCursor(cursor + 1)
+      e.preventDefault() // スペースキーのデフォルト動作を防ぐ
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 

@@ -28,9 +28,6 @@ export default function Page() {
       setCursor(cursor + 1)
     } else if (e.key === 'Enter' && cursor < testTable.length - 1) {
       setCursor(cursor + 1)
-    } else if (e.key === 'Space' && cursor === testTable.length - 1) {
-      setCursor(cursor + 1)
-      e.preventDefault() // スペースキーのデフォルト動作を防ぐ
     } else if (e.key === 'Tab') {
       const currentLabel = testTable[cursor].new_label
 
@@ -55,9 +52,11 @@ export default function Page() {
   }
 
   const handleTextClick = (index: number) => {
-    // 現在編集中の行に値を設定する
-    const number = testTable[index].number
-    handleLabelChange(cursor, number)
+    if (cursor !== index) {
+      // 現在編集中の行に値を設定する
+      const number = testTable[index].number
+      handleLabelChange(cursor, number)
+    }
     // カーソルを1つ下に移動する
     setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
   }

@@ -62,7 +62,7 @@ export const CSVDownloader: React.FC<CSVDownloaderProps> = ({
 }) => {
   return (
     <button onClick={() => downloadCSV(data, filename)} style={style}>
-      Download CSV
+      作業結果をダウンロード
     </button>
   )
 }

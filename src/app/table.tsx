@@ -125,7 +125,12 @@ const Table: React.FC<TableProps> = ({
                     className="w-full"
                   />
                   {cursor === index && isEmpty && (
-                    <span className="absolute left-1 top-1/2 z-0 -translate-y-1/2 text-gray-500">
+                    <span
+                      className="absolute left-2 top-1/2 z-0 -translate-y-1/2 text-gray-500"
+                      style={{
+                        pointerEvents: 'none',
+                      }}
+                    >
                       {predictedLabel}
                     </span>
                   )}

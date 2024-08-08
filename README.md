@@ -7,6 +7,7 @@
 ### Vercel
 https://annotation-tool-ivory.vercel.app/
 
+
 ※基本的にはPC上での作業を想定していますが、スマホやタブレットでも不可能ではありません。
 
 ※やる必要はないと思いますが、最新版のnode.js、npmの利用できる環境であれば、リポジトリをcloneして「npm run dev」を実行することでローカルでも利用できます。

@@ -1,3 +1,4 @@
+import { useCSVData } from '@/app/CSVContext'
 import { useState } from 'react'
 
 interface TestTableRow {
@@ -10,6 +11,7 @@ export const usePredictedLabel = (
   cursor: number,
 ) => {
   const [predictedLabel, setPredictedLabel] = useState<number | null>(null)
+  const { teacherSpeakerCode } = useCSVData()
 
   const calculatePredictedLabel = () => {
     return new Promise((resolve) => {
@@ -23,7 +25,7 @@ export const usePredictedLabel = (
       if (testTable[cursor].new_label === null) {
         const currentSpeakerCode = testTable[cursor].speaker_code
 
-        if (currentSpeakerCode === 1) {
+        if (currentSpeakerCode === teacherSpeakerCode) {
           prediction = -1
         } else {
           for (let i = cursor - 1; i >= 0; i--) {

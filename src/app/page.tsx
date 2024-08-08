@@ -1,15 +1,14 @@
 'use client'
 
+import { useCSVData } from '@/app/CSVContext'
 import { useEffect, useRef, useState } from 'react'
-import { CSVDownloader } from './CSVDownloader' // 追加
-import { CSVReader } from './CSVReader'
 import Table from './table'
 import { useInputValidation } from './useInputValidation'
 import { usePredictedLabel } from './usePredictedLabel'
-import { test_table } from './utils'
 
 export default function Page() {
-  const [testTable, setTestTable] = useState(test_table)
+  const { csvData } = useCSVData()
+  const [testTable, setTestTable] = useState(csvData)
   const [cursor, setCursor] = useState(0)
   const inputRefs = useRef<HTMLInputElement[]>([])
   const { predictedLabel, calculatePredictedLabel } = usePredictedLabel(
@@ -32,7 +31,6 @@ export default function Page() {
       const currentLabel = testTable[cursor].new_label
 
       if (currentLabel === null) {
-        // 予測機能を使う
         const updatedTable = [...testTable]
         const prediction = await calculatePredictedLabel()
         updatedTable[cursor].new_label = Number(prediction)
@@ -53,16 +51,13 @@ export default function Page() {
 
   const handleTextClick = (index: number) => {
     if (cursor !== index) {
-      // 現在編集中の行に値を設定する
       const number = testTable[index].number
       handleLabelChange(cursor, number)
     }
-    // カーソルを1つ下に移動する
     setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
   }
 
   const handleInputClick = (index: number) => {
-    // inputがクリックされた時、カーソルをその行に移動する
     setCursor(index)
   }
 
@@ -83,18 +78,12 @@ export default function Page() {
     calculatePredictedLabel()
   }, [cursor])
 
-  const handleDataLoaded = (data: typeof testTable) => {
-    setTestTable(data)
-  }
+  useEffect(() => {
+    setTestTable(csvData)
+  }, [csvData])
 
   return (
-    <>
-      <CSVReader onDataLoaded={handleDataLoaded} />
-      <CSVDownloader
-        data={testTable}
-        filename="annotated_data.csv" // デフォルトファイル名
-        style={{ position: 'absolute', top: 10, right: 10 }}
-      />
+    <div>
       <Table
         testTable={testTable}
         cursor={cursor}
@@ -105,6 +94,6 @@ export default function Page() {
         handleInputClick={handleInputClick}
         inputRefs={inputRefs}
       />
-    </>
+    </div>
   )
 }

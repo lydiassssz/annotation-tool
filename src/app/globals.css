@@ -2,3 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #f0f0f0;
+}
+
+.btn svg {
+    width: 24px;
+    height: 24px;
+}

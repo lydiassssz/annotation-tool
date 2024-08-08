@@ -1,4 +1,6 @@
-// import '@/app/globals.css'
+import { CSVProvider } from '@/app/CSVContext'
+import '@/app/globals.css'
+import Header from '@/app/Header'
 
 export const metadata = {
   title: '2024市川ゼミ_ラベリングツール',
@@ -11,8 +13,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja">
-      <body>{children}</body>
-    </html>
+    <CSVProvider>
+      <html lang="ja">
+        <body className="bg-gray-50">
+          <div>
+            <Header />
+            <main>{children}</main>
+          </div>
+        </body>
+      </html>
+    </CSVProvider>
   )
 }

@@ -1,6 +1,7 @@
 import type { TableRow } from '@/app/utils'
 import Encoding from 'encoding-japanese'
 import React from 'react'
+import { AiOutlineDownload } from 'react-icons/ai'
 
 // CSV 文字列を Shift-JIS 形式でエンコードし、ダウンロードする
 const downloadCSV = (data: TableRow[], filename: string) => {
@@ -61,8 +62,12 @@ export const CSVDownloader: React.FC<CSVDownloaderProps> = ({
   style,
 }) => {
   return (
-    <button onClick={() => downloadCSV(data, filename)} style={style}>
-      作業結果をダウンロード
+    <button
+      onClick={() => downloadCSV(data, filename)}
+      style={style}
+      className="btn"
+    >
+      <AiOutlineDownload />
     </button>
   )
 }

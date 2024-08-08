@@ -1,6 +1,7 @@
 import type { TableRow } from '@/app/utils'
 import Encoding from 'encoding-japanese'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
+import { AiOutlineUpload } from 'react-icons/ai'
 
 type ParsedData = string[][]
 
@@ -9,6 +10,8 @@ interface FileUploaderProps {
 }
 
 export function FileUploader({ onFileLoaded }: FileUploaderProps) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -21,7 +24,24 @@ export function FileUploader({ onFileLoaded }: FileUploaderProps) {
     }
   }
 
-  return <input type="file" accept=".csv" onChange={handleFileUpload} />
+  const handleButtonClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  return (
+    <div>
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileUpload}
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+      />
+      <button onClick={handleButtonClick} className="btn">
+        <AiOutlineUpload />
+      </button>
+    </div>
+  )
 }
 
 export function decodeShiftJIS(arrayBuffer: ArrayBuffer) {
@@ -71,7 +91,7 @@ interface CSVReaderProps {
 }
 
 export function CSVReader({ onDataLoaded }: CSVReaderProps) {
-  const [csvData, setCSVData] = useState<null | TableRow[]>(null)
+  const [, setCSVData] = useState<null | TableRow[]>(null)
 
   const handleFileLoaded = async (content: ArrayBuffer) => {
     const decodedContent = decodeShiftJIS(content)

@@ -16,17 +16,18 @@ const downloadCSV = (data: TableRow[], filename: string) => {
   ]
   const csvRows = [
     header.join(','), // ヘッダー
-    ...data.map((row) =>
-      [
+    ...data.map((row) => {
+      const escapedText = `"${row.text.replace(/"/g, '""')}"` // テキスト内のダブルクオートをエスケープし、カンマが含まれている場合は""で囲む
+      return [
         row.number,
-        row.text,
+        escapedText,
         row.speaker_code,
         row.from,
         row.to,
         row.label,
         row.new_label === null ? '0' : row.new_label,
-      ].join(','),
-    ),
+      ].join(',')
+    }),
   ]
 
   const csvString = csvRows.join('\r\n')

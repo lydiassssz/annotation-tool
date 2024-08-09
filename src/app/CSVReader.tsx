@@ -65,8 +65,11 @@ const parseCSV = (csvString: string): TableRow[] => {
     rows.shift() // 最初の行を削除
   }
 
+  const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g
+
   for (const row of rows) {
-    const columns = row.split(',')
+    const columns =
+      row.match(regex)?.map((col) => col.replace(/(^"|"$)/g, '')) || []
 
     if (columns.length >= 7) {
       const [number, text, speaker_code, from, to, label, new_label] = columns
@@ -75,8 +78,8 @@ const parseCSV = (csvString: string): TableRow[] => {
         number: parseInt(number, 10),
         text,
         speaker_code: parseInt(speaker_code, 10),
-        from: parseInt(from, 10),
-        to: parseInt(to, 10),
+        from: parseFloat(from), // floatとして読み込む
+        to: parseFloat(to), // floatとして読み込む
         label: parseInt(label, 10),
         new_label: new_label === '0' ? null : parseInt(new_label, 10),
       })

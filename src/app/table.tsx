@@ -91,10 +91,10 @@ const Table: React.FC<TableProps> = ({
                   {row.speaker_code}
                 </td>
                 <td className="p-2" style={{ backgroundColor: bgColor }}>
-                  {row.from}
+                  {row.from.toFixed(2)}
                 </td>
                 <td className="p-2" style={{ backgroundColor: bgColor }}>
-                  {row.to}
+                  {row.to.toFixed(2)}
                 </td>
                 <td className="p-2" style={{ backgroundColor: bgColor }}>
                   {row.label}

@@ -5,28 +5,28 @@ import { AiOutlineDownload } from 'react-icons/ai'
 
 // CSV 文字列を Shift-JIS 形式でエンコードし、ダウンロードする
 const downloadCSV = (data: TableRow[], filename: string) => {
-  const header = [
-    'number',
-    'text',
-    'speaker_code',
-    'from',
-    'to',
-    'label',
-    'new_label',
-  ]
+  if (data.length === 0) {
+    console.warn('No data to download')
+    return
+  }
+
+  // ヘッダーを可変にする
+  const header = Object.keys(data[0])
+
   const csvRows = [
     header.join(','), // ヘッダー
     ...data.map((row) => {
-      const escapedText = `"${row.text.replace(/"/g, '""')}"` // テキスト内のダブルクオートをエスケープし、カンマが含まれている場合は""で囲む
-      return [
-        row.number,
-        escapedText,
-        row.speaker_code,
-        row.from,
-        row.to,
-        row.label,
-        row.new_label === null ? '0' : row.new_label,
-      ].join(',')
+      const escapedRow = header.map((key) => {
+        let cellValue = row[key as keyof TableRow]
+        if (typeof cellValue === 'string') {
+          // テキスト内のダブルクオートをエスケープし、カンマが含まれている場合は""で囲む
+          cellValue = `"${cellValue.replace(/"/g, '""')}"`
+        }
+        return cellValue === null || cellValue === undefined
+          ? ''
+          : cellValue.toString()
+      })
+      return escapedRow.join(',')
     }),
   ]
 

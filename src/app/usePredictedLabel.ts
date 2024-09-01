@@ -1,15 +1,8 @@
 import { useCSVData } from '@/app/CSVContext'
+import type { TableRow } from '@/app/utils'
 import { useState } from 'react'
 
-interface TestTableRow {
-  speaker_code: number
-  new_label: number | null
-}
-
-export const usePredictedLabel = (
-  testTable: TestTableRow[],
-  cursor: number,
-) => {
+export const usePredictedLabel = (testTable: TableRow[], cursor: number) => {
   const [predictedLabel, setPredictedLabel] = useState<number | null>(null)
   const { teacherSpeakerCode } = useCSVData()
 

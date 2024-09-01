@@ -3,8 +3,8 @@ export interface TableRow {
   number: number
   text: string
   speaker_code: number
-  from: number
-  to: number
+  from?: number | null
+  to?: number | null
   label: number
   new_label: number | null
 }

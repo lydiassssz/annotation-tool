@@ -1,3 +1,5 @@
+// CSVReader.tsx
+
 import type { TableRow } from '@/app/utils'
 import Encoding from 'encoding-japanese'
 import React, { useRef, useState } from 'react'
@@ -58,32 +60,73 @@ const parseCSV = (csvString: string): TableRow[] => {
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
+
+  if (rows.length === 0) return []
+
+  const headerLine = rows[0]
+  const headers = headerLine.split(',').map((col) => col.trim())
+
+  // 変数を使って、必要なカラムを前に持ってくる
+  const preferredOrder = [
+    'number',
+    'text',
+    'speaker_code',
+    'from',
+    'to',
+    'label',
+    'new_label',
+  ]
+  const reorderedHeaders = headers
+    .filter((header) => preferredOrder.includes(header))
+    .concat(headers.filter((header) => !preferredOrder.includes(header)))
+
   const result: TableRow[] = []
 
-  // ヘッダー行をスキップする場合、最初の行を削除します
-  if (rows.length > 0) {
-    rows.shift() // 最初の行を削除
-  }
+  for (let i = 1; i < rows.length; i++) {
+    const row = rows[i]
+    const columns = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || []
 
-  const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g
-
-  for (const row of rows) {
-    const columns =
-      row.match(regex)?.map((col) => col.replace(/(^"|"$)/g, '')) || []
-
-    if (columns.length >= 7) {
-      const [number, text, speaker_code, from, to, label, new_label] = columns
-
-      result.push({
-        number: parseInt(number, 10),
-        text,
-        speaker_code: parseInt(speaker_code, 10),
-        from: parseFloat(from), // floatとして読み込む
-        to: parseFloat(to), // floatとして読み込む
-        label: parseInt(label, 10),
-        new_label: new_label === '0' ? null : parseInt(new_label, 10),
-      })
+    const rowData: TableRow = {
+      number: 0,
+      text: '',
+      speaker_code: 0,
+      from: 0,
+      to: 0,
+      label: 0,
+      new_label: null,
     }
+
+    reorderedHeaders.forEach((header, index) => {
+      const value = columns[index] !== undefined ? columns[index] : ''
+
+      // 特定のカラムに対して型変換を適用
+      switch (header) {
+        case 'number':
+        case 'speaker_code':
+        case 'label':
+          rowData[header] = parseInt(value, 10) || 0
+          break
+        case 'from':
+        case 'to':
+          rowData[header] = parseFloat(value) || 0
+          break
+        case 'new_label':
+          rowData[header] =
+            value === '0' || value === '' ? null : parseInt(value, 10)
+          break
+        case 'text':
+          rowData[header] = value.replace(/^"|"$/g, '').replace(/""/g, '"') // ダブルクオートを正しく処理
+          break
+        default:
+          break
+      }
+    })
+
+    // from または to がデフォルト値のままの場合に削除する
+    if (rowData.from === 0) delete rowData.from
+    if (rowData.to === 0) delete rowData.to
+
+    result.push(rowData as TableRow)
   }
 
   return result

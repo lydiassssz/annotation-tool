@@ -75,7 +75,7 @@ export default function Page() {
   }, [cursor])
 
   useEffect(() => {
-    calculatePredictedLabel()
+    calculatePredictedLabel().then((r) => r)
   }, [cursor])
 
   useEffect(() => {

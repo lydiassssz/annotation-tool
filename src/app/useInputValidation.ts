@@ -1,15 +1,7 @@
+import type { TableRow } from '@/app/utils'
 import type React from 'react'
 
 // Define the types
-interface TableRow {
-  number: number
-  text: string
-  speaker_code: number
-  from: number
-  to: number
-  label: number
-  new_label: number | null
-}
 
 // Define the type for the function arguments
 interface UseInputValidationProps {

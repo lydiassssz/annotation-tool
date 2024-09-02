@@ -36,5 +36,23 @@ export const usePredictedLabel = (testTable: TableRow[], cursor: number) => {
     })
   }
 
-  return { predictedLabel, calculatePredictedLabel }
+  const calculatePreviousLabel = () => {
+    return new Promise<number | null>((resolve) => {
+      if (testTable.length === 0 || cursor <= 0) {
+        resolve(null)
+        return
+      }
+
+      for (let i = cursor; i >= 0; i--) {
+        if (testTable[i].label !== null) {
+          resolve(testTable[i].label)
+          return
+        }
+      }
+
+      resolve(null)
+    })
+  }
+
+  return { predictedLabel, calculatePredictedLabel, calculatePreviousLabel }
 }

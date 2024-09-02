@@ -54,6 +54,12 @@ const Table: React.FC<TableProps> = ({
 
   const headers = Object.keys(testTable[0])
 
+  // 追加: 入力した `new_label` に対応する `speaker_code` を取得する関数
+  const getSpeakerCodeForLabel = (label: number | null) => {
+    const foundRow = testTable.find((row) => row.number === label)
+    return foundRow ? foundRow.speaker_code : null
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse">
@@ -78,8 +84,12 @@ const Table: React.FC<TableProps> = ({
               teacherSpeakerCode,
             )
 
+            // 追加: `new_label` が `number` 列の `speaker_code` と一致する場合の判定
+            const speakerCodeForLabel = getSpeakerCodeForLabel(row.new_label)
             const isInvalid =
-              row.new_label !== null && row.new_label >= row.number
+              row.new_label !== null &&
+              (row.new_label >= row.number ||
+                speakerCodeForLabel === row.speaker_code)
             const isEmpty = row.new_label === null
 
             return (

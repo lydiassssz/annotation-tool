@@ -11,14 +11,13 @@ export default function Page() {
   const [testTable, setTestTable] = useState(csvData)
   const [cursor, setCursor] = useState(0)
   const inputRefs = useRef<HTMLInputElement[]>([])
-  const { predictedLabel, calculatePredictedLabel } = usePredictedLabel(
-    testTable,
-    cursor,
-  )
+  const { predictedLabel, calculatePredictedLabel, calculatePreviousLabel } =
+    usePredictedLabel(testTable, cursor)
   const { handleLabelChange } = useInputValidation({ testTable, setTestTable })
 
   const handleKeyDown = async (e: {
     key: string
+    altKey: boolean
     preventDefault: () => void
   }) => {
     if (e.key === 'ArrowUp' && cursor > 0) {
@@ -41,6 +40,18 @@ export default function Page() {
         )
         e.preventDefault()
       } else {
+        setCursor((prevCursor) =>
+          Math.min(prevCursor + 1, testTable.length - 1),
+        )
+        e.preventDefault()
+      }
+    } else if (e.altKey && e.key === 'Alt') {
+      const updatedTable = [...testTable]
+      const previousLabel = await calculatePreviousLabel()
+
+      if (previousLabel !== null) {
+        updatedTable[cursor].new_label = previousLabel
+        setTestTable(updatedTable)
         setCursor((prevCursor) =>
           Math.min(prevCursor + 1, testTable.length - 1),
         )

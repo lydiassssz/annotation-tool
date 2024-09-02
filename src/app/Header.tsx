@@ -26,7 +26,7 @@ const Header = () => {
 
   const handleSpeakerCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10)
-    if (isNaN(value) || value < 1 || value > 10) {
+    if (isNaN(value) || value < 0 || value > 10) {
       setTeacherSpeakerCode(1) // 無効な値はデフォルトにリセット
     } else {
       setTeacherSpeakerCode(value)
@@ -51,12 +51,12 @@ const Header = () => {
           </label>
           <input
             type="number"
-            min="1"
+            min="0"
             max="10"
             value={teacherSpeakerCode} // Contextの値を表示
             onChange={handleSpeakerCodeChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="1～10の数字を入力"
+            placeholder="0～10の数字を入力"
           />
         </div>
       </Modal>

@@ -5,8 +5,6 @@ import Encoding from 'encoding-japanese'
 import React, { useRef, useState } from 'react'
 import { AiOutlineUpload } from 'react-icons/ai'
 
-type ParsedData = string[][]
-
 interface FileUploaderProps {
   onFileLoaded: (content: ArrayBuffer) => void
 }

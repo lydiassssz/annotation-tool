@@ -1,10 +1,5 @@
+import type { ModalProps } from '@/utils/modal_type'
 import React, { useEffect, useRef } from 'react'
-
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
-}
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const modalRef = useRef<HTMLDivElement | null>(null)

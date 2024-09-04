@@ -1,4 +1,4 @@
-import type { TableRow } from '@/app/utils'
+import type { TableRow } from '@/utils/table_type'
 import Encoding from 'encoding-japanese'
 import React from 'react'
 import { AiOutlineDownload } from 'react-icons/ai'

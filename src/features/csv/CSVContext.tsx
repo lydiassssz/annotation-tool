@@ -1,7 +1,7 @@
 'use client'
 
-import type { TableRow } from '@/app/utils'
-import { test_table } from '@/app/utils'
+import type { TableRow } from '@/utils/table_type'
+import { test_table } from '@/utils/table_type'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 interface CSVContextProps {

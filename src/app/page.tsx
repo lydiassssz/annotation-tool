@@ -1,83 +1,43 @@
 'use client'
 
-import { useCSVData } from '@/app/CSVContext'
+import Table from '@/components/table'
+import { useCSVData } from '@/features/csv/CSVContext'
+import { useHandleClick } from '@/features/input_assist/useHandleClick'
+import { useHandleKeyDown } from '@/features/input_assist/useHandleKeyDown'
+import { useInputValidation } from '@/features/input_assist/useInputValidation'
+import { usePredictedLabel } from '@/features/input_assist/usePredictedLabel'
 import { useEffect, useRef, useState } from 'react'
-import Table from './table'
-import { useInputValidation } from './useInputValidation'
-import { usePredictedLabel } from './usePredictedLabel'
 
 export default function Page() {
   const { csvData } = useCSVData()
-  const [testTable, setTestTable] = useState(csvData)
+  const [dataTable, setDataTable] = useState(csvData)
   const [cursor, setCursor] = useState(0)
   const inputRefs = useRef<HTMLInputElement[]>([])
   const { predictedLabel, calculatePredictedLabel, calculatePreviousLabel } =
-    usePredictedLabel(testTable, cursor)
-  const { handleLabelChange } = useInputValidation({ testTable, setTestTable })
+    usePredictedLabel(dataTable, cursor)
+  const { handleLabelChange } = useInputValidation({ dataTable, setDataTable })
+  const handleKeyDown = useHandleKeyDown({
+    cursor,
+    setCursor,
+    dataTable,
+    setDataTable,
+    calculatePredictedLabel,
+    calculatePreviousLabel,
+  })
 
-  const handleKeyDown = async (e: {
-    key: string
-    altKey: boolean
-    preventDefault: () => void
-  }) => {
-    if (e.key === 'ArrowUp' && cursor > 0) {
-      setCursor(cursor - 1)
-    } else if (e.key === 'ArrowDown' && cursor < testTable.length - 1) {
-      setCursor(cursor + 1)
-    } else if (e.key === 'Enter' && cursor < testTable.length - 1) {
-      setCursor(cursor + 1)
-    } else if (e.key === 'Tab') {
-      const currentLabel = testTable[cursor].new_label
-
-      if (currentLabel === null) {
-        const updatedTable = [...testTable]
-        const prediction = await calculatePredictedLabel()
-        updatedTable[cursor].new_label = Number(prediction)
-
-        setTestTable(updatedTable)
-        setCursor((prevCursor) =>
-          Math.min(prevCursor + 1, testTable.length - 1),
-        )
-        e.preventDefault()
-      } else {
-        setCursor((prevCursor) =>
-          Math.min(prevCursor + 1, testTable.length - 1),
-        )
-        e.preventDefault()
-      }
-    } else if (e.altKey && e.key === 'Alt') {
-      const updatedTable = [...testTable]
-      const previousLabel = await calculatePreviousLabel()
-
-      if (previousLabel !== null) {
-        updatedTable[cursor].new_label = previousLabel
-        setTestTable(updatedTable)
-        setCursor((prevCursor) =>
-          Math.min(prevCursor + 1, testTable.length - 1),
-        )
-        e.preventDefault()
-      }
-    }
-  }
-
-  const handleTextClick = (index: number) => {
-    if (cursor !== index) {
-      const number = testTable[index].number
-      handleLabelChange(cursor, number)
-    }
-    setCursor((prevCursor) => Math.min(prevCursor + 1, testTable.length - 1))
-  }
-
-  const handleInputClick = (index: number) => {
-    setCursor(index)
-  }
+  const { handleTextClick, handleInputClick } = useHandleClick({
+    cursor,
+    setCursor,
+    dataTable,
+    handleLabelChange,
+  })
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [cursor, testTable.length])
+  }, [handleKeyDown])
 
   useEffect(() => {
     if (inputRefs.current[cursor]) {
@@ -86,17 +46,14 @@ export default function Page() {
   }, [cursor])
 
   useEffect(() => {
-    calculatePredictedLabel().then((r) => r)
-  }, [cursor])
-
-  useEffect(() => {
-    setTestTable(csvData)
-  }, [csvData])
+    setDataTable(csvData)
+    calculatePredictedLabel().then((r) => console.log(r))
+  }, [calculatePredictedLabel, csvData, cursor])
 
   return (
     <div>
       <Table
-        testTable={testTable}
+        dataTable={dataTable}
         cursor={cursor}
         setCursor={setCursor}
         handleLabelChange={handleLabelChange}

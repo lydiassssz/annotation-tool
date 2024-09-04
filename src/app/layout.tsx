@@ -1,6 +1,6 @@
-import { CSVProvider } from '@/app/CSVContext'
 import '@/app/globals.css'
-import Header from '@/app/Header'
+import Header from '@/components/Header'
+import { CSVProvider } from '@/features/csv/CSVContext'
 
 export const metadata = {
   title: '2024市川ゼミ_ラベリングツール',

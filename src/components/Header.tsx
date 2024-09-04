@@ -1,9 +1,9 @@
 'use client'
-import { useCSVData } from '@/app/CSVContext'
-import { CSVDownloader } from '@/app/CSVDownloader'
-import { CSVReader } from '@/app/CSVReader'
-import Modal from '@/app/Modal' // モーダルコンポーネントをインポート
-import type { TableRow } from '@/app/utils'
+import Modal from '@/components/Modal'
+import { useCSVData } from '@/features/csv/CSVContext'
+import { CSVDownloader } from '@/features/csv/CSVDownloader'
+import { CSVUploader } from '@/features/csv/CSVUploader'
+import type { TableRow } from '@/utils/table_type'
 import { useState } from 'react'
 import { AiOutlineSetting } from 'react-icons/ai'
 
@@ -37,7 +37,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between bg-white p-4 shadow-md">
       <div className="flex space-x-4">
-        <CSVReader onDataLoaded={handleDataLoaded} />
+        <CSVUploader onDataLoaded={handleDataLoaded} />
         <CSVDownloader data={csvData} filename="annotated_data.csv" />
       </div>
       <button onClick={handleSettingsClick} className="btn">

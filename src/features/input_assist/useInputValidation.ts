@@ -1,23 +1,23 @@
-import type { TableRow } from '@/app/utils'
+import type { TableRow } from '@/utils/table_type'
 import type React from 'react'
 
 // Define the types
 
 // Define the type for the function arguments
 interface UseInputValidationProps {
-  testTable: TableRow[]
-  setTestTable: React.Dispatch<React.SetStateAction<TableRow[]>>
+  dataTable: TableRow[]
+  setDataTable: React.Dispatch<React.SetStateAction<TableRow[]>>
 }
 
 // Apply types to the function parameters
 export const useInputValidation = ({
-  testTable,
-  setTestTable,
+  dataTable,
+  setDataTable,
 }: UseInputValidationProps) => {
   const handleLabelChange = (index: number, newLabel: number | null) => {
-    const updatedTable = [...testTable]
+    const updatedTable = [...dataTable]
     updatedTable[index].new_label = newLabel === 0 ? null : newLabel
-    setTestTable(updatedTable)
+    setDataTable(updatedTable)
   }
 
   return { handleLabelChange }

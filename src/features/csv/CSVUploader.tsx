@@ -1,6 +1,6 @@
-// CSVReader.tsx
+// CSVUploader.tsx
 
-import type { TableRow } from '@/app/utils'
+import type { TableRow } from '@/utils/table_type'
 import Encoding from 'encoding-japanese'
 import React, { useRef, useState } from 'react'
 import { AiOutlineUpload } from 'react-icons/ai'
@@ -134,7 +134,7 @@ interface CSVReaderProps {
   onDataLoaded: (data: TableRow[]) => void
 }
 
-export function CSVReader({ onDataLoaded }: CSVReaderProps) {
+export function CSVUploader({ onDataLoaded }: CSVReaderProps) {
   const [, setCSVData] = useState<null | TableRow[]>(null)
 
   const handleFileLoaded = async (content: ArrayBuffer) => {

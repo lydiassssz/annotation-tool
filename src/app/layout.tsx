@@ -1,6 +1,7 @@
 import '@/app/globals.css'
 import Header from '@/components/Header'
 import { CSVProvider } from '@/features/csv/CSVContext'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
   title: '2024市川ゼミ_ラベリングツール',
@@ -21,6 +22,7 @@ export default function RootLayout({
             <main>{children}</main>
           </div>
         </body>
+        <GoogleAnalytics gaId={process.env.GA_ID ?? ''} />
       </html>
     </CSVProvider>
   )
